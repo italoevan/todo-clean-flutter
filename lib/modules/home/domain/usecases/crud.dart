@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:to_do_clean/modules/home/presenter/components/home_dialog.dart';
-import '../domain/entities/todo.dart';
-import '../domain/repositories/home_repository.dart';
+import '../repositories/home_repository.dart';
+import '../entities/todo.dart';
+import '../../presenter/components/home_dialog.dart';
+
 import 'package:flutter/material.dart';
 
-abstract class HomeController {
+abstract class Crud {
   bool get isLoading;
   List<Todo> get todoList;
   Future insert(Todo model);
@@ -16,16 +17,16 @@ abstract class HomeController {
   void onActionTap(BuildContext context);
 }
 
-class HomeControllerImpl extends GetxController implements HomeController {
+class CrudImplementation extends GetxController implements Crud {
   final HomeRepository repository;
-  HomeControllerImpl(this.repository);
+  CrudImplementation(this.repository);
 
   @override
   List<Todo> get todoList => _todoList;
 
-  var _todoList = <Todo>[].obs;
+  final _todoList = <Todo>[].obs;
 
-  var _listIsLoading = true.obs;
+  final _listIsLoading = true.obs;
 
   bool get isLoading => _listIsLoading.value;
 
