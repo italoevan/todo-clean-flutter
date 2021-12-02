@@ -26,7 +26,16 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
         title: const Text("To-do App"),
         centerTitle: true,
       ),
-      body: Obx(() => controller.isLoading
+      body: Obx(() => _listOfTodo() ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => controller.onActionTap(context),
+        child: Text("Add"),
+      ),
+    );
+  }
+
+  Widget _listOfTodo(){
+    return controller.isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -39,11 +48,6 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
                   removeTap: () => controller.removeById(todo.id!),
                   editTap: () => controller.onEditTap(context, todo),
                 );
-              })),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => controller.onActionTap(context),
-        child: Text("Add"),
-      ),
-    );
+              });
   }
 }
