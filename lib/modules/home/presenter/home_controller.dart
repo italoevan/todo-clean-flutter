@@ -1,27 +1,15 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-import '../repositories/home_repository.dart';
-import '../entities/todo.dart';
-import '../../presenter/components/home_dialog.dart';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../domain/entities/todo.dart';
+import '../domain/usecases/crud_usecase.dart';
 
-abstract class Crud {
-  bool get isLoading;
-  List<Todo> get todoList;
-  Future insert(Todo model);
-  Future<void> read();
-  void removeById(int id);
-  Future edit(Todo model, String newDescription);
-  void onEditTap(BuildContext context, Todo todo);
-  void onActionTap(BuildContext context);
-}
+import 'components/home_dialog.dart';
 
-class CrudImplementation extends GetxController implements Crud {
-  final HomeRepository repository;
-  CrudImplementation(this.repository);
+class HomeController extends GetxController {
+  final CrudUsecase _crudUsecase;
 
-  @override
+  HomeController(this._crudUsecase);
+
   List<Todo> get todoList => _todoList;
 
   final _todoList = <Todo>[].obs;
@@ -30,33 +18,29 @@ class CrudImplementation extends GetxController implements Crud {
 
   bool get isLoading => _listIsLoading.value;
 
-  @override
   Future edit(Todo model, String newDescription) async {
     model.description = newDescription;
-    await repository.edit(model);
+    await _crudUsecase.edit(model, newDescription);
     _todoList.refresh();
   }
 
-  @override
   Future insert(Todo model) async {
-    await repository.insert(model);
+    await _crudUsecase.insert(model);
     read();
   }
 
-  @override
-  Future<void> read() async {
+  Future<List<Todo>> read() async {
     _listIsLoading.value = true;
-    _todoList.value = await repository.read();
+    _todoList.value = await _crudUsecase.read();
     _listIsLoading.value = false;
+    return _todoList;
   }
 
-  @override
   void removeById(int id) async {
-    await repository.removeById(id);
+    await _crudUsecase.removeById(id);
     read();
   }
 
-  @override
   void onEditTap(BuildContext context, Todo todo) {
     TextEditingController controller =
         TextEditingController(text: todo.description);
@@ -72,7 +56,6 @@ class CrudImplementation extends GetxController implements Crud {
         });
   }
 
-  @override
   void onActionTap(BuildContext context) {
     TextEditingController controller = TextEditingController();
     showDialog(

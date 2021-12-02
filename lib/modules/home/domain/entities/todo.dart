@@ -11,6 +11,8 @@ class Todo extends Comparable {
     dateTime = DateTime.tryParse(map['dateTime']) ?? DateTime.now();
   }
 
+  Todo.toTest({this.id, required this.dateTime, this.description});
+
   Map<String, dynamic> toMap() {
     return {
       "description": description,

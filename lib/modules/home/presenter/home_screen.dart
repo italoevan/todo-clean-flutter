@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/get.dart';
-import 'package:to_do_clean/modules/home/domain/entities/todo.dart';
-import 'package:to_do_clean/modules/home/domain/usecases/crud.dart';
-import 'package:to_do_clean/modules/home/presenter/components/todo_card.dart';
+import '../domain/entities/todo.dart';
+import 'components/todo_card.dart';
+import 'home_controller.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ModularState<HomeScreen, Crud> {
+class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
   @override
   void initState() {
     controller.read();
