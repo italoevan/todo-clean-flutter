@@ -16,6 +16,7 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
   @override
   void initState() {
     controller.read();
+    super.initState();
   }
 
   @override
